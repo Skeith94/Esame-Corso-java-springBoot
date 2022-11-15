@@ -6,8 +6,8 @@ import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Embeddable
 @Getter
@@ -30,5 +30,23 @@ public class RentalId implements Serializable {
         this.rentalDate = rentalDate;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        RentalId rentalId = (RentalId) o;
+
+        if (!Objects.equals(customerId, rentalId.customerId)) return false;
+        if (!Objects.equals(inventoryId, rentalId.inventoryId))
+            return false;
+        return Objects.equals(rentalDate, rentalId.rentalDate);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = customerId != null ? customerId.hashCode() : 0;
+        result = 31 * result + (inventoryId != null ? inventoryId.hashCode() : 0);
+        return result;
+    }
 }

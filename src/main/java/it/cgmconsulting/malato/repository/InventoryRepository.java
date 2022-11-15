@@ -17,4 +17,6 @@ public interface InventoryRepository extends JpaRepository<Inventory,Long> {
     @Query("select i from Inventory i where i.storeId=:store and i.filmId=:film")
     List<Inventory> findInventories(@Param("film") Film film,@Param("store") Store store);
 
+    @Query("select i from Inventory i where i.storeId=:store")
+    List<Inventory>findAllInventoryByStore(@Param("store")Store store);
 }

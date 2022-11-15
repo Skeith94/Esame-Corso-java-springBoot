@@ -5,7 +5,6 @@ import it.cgmconsulting.malato.entity.Inventory;
 import it.cgmconsulting.malato.entity.Store;
 import it.cgmconsulting.malato.repository.InventoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +26,10 @@ public class InventoryService {
 
     public List<Inventory> findInventories(Film film,Store store){
         return inventoryRepository.findInventories(film,store);
+    }
+
+    public List<Inventory>findAllInventoryByStore(Store store){
+        return inventoryRepository.findAllInventoryByStore(store);
     }
 
 

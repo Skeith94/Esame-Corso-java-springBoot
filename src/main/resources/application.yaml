@@ -8,9 +8,9 @@ spring:
   
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/video_store_exam?createDatabaseIfNotExist=true&characterEncoding=UTF-8&autoReconnect=true&useSLL=false&useLegacyDatetimeCode=false
+    url: jdbc:mysql://localhost:6603/video_store_exam?createDatabaseIfNotExist=true&characterEncoding=UTF-8&autoReconnect=true&useSLL=false&useLegacyDatetimeCode=false
     username: root
-    password:
+    password: 12345
   jpa:
     generate-ddl: true
     show-sql: true
@@ -22,3 +22,8 @@ spring:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect 
         '[format_sql]': true
 
+
+  #logging:
+    #level:
+      #org:
+      # hibernate: trace
