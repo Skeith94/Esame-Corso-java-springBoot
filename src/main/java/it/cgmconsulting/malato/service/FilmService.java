@@ -8,7 +8,6 @@ import it.cgmconsulting.malato.repository.FilmRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,9 +29,8 @@ public class FilmService {
     }
 
     public List<FilmResponse> getFilmByAuthors(List<String>lastNames){
-        List<FilmResponse> filmsAuthor = filmRepository.getFilmByAuthors(lastNames);
-        List<FilmResponse> filmsFinal=new ArrayList<>();
-       filmsAuthor.stream().filter(i->i.getN()==lastNames.size()).forEach(filmsFinal::add);
-       return filmsFinal;
+       return filmRepository.getFilmByAuthors(lastNames,lastNames.size());
     }
+
+
 }

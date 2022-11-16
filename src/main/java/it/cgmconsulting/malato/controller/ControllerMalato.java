@@ -137,6 +137,10 @@ public class ControllerMalato {
        for(Inventory i:inventories){
            //ritorno solo la rentals di quel determinato inventario con la consegna piu recente grazie al pageable
            List<Rental> rentals = rentalService.getRentalsByInventory(i);
+           //nel caso il rental return ritorna null,
+           if(Objects.isNull(rentals.get(0).getRentalReturn())){
+               continue;
+           }
            // in caso non e mai stato noleggiato il film oppure ultima volta che e stato noleggiato e stato gia consegnato in quel caso il prodotto e disponibile
            if(rentals.isEmpty() || rentals.get(0).getRentalReturn().isBefore(LocalDateTime.now())){
                Rental newRental=new Rental(new RentalId(customer.get(),i, LocalDateTime.now()),LocalDateTime.now().plusDays(request.getDaysRental()));
@@ -153,18 +157,17 @@ public class ControllerMalato {
     }
 
     @GetMapping("/count-rentals-in-date-range-by-store/{storeId}")
-    ResponseEntity<?>countRentalsDate(@PathVariable Long storeId, @RequestParam @NotNull String dateStartRequest,@NotNull @RequestParam String dateEndRequest){
+    ResponseEntity<?>countRentalsDate(@PathVariable Long storeId, @NotNull @RequestParam(defaultValue = "2000/01/01")  String dateStartRequest,@NotNull @RequestParam(defaultValue = "2008/02/03")  String dateEndRequest){
 
-
-        String dateParts[] = dateStartRequest.split("/");
+        String[] dateParts = dateStartRequest.split("/");
         LocalDateTime dateStart;
         LocalDateTime dateEnd;
         try {
-            dateStart = LocalDateTime.of(Integer.parseInt(dateParts[2]), Integer.parseInt(dateParts[1]), Integer.parseInt(dateParts[0]), 0, 0,0);
+            dateStart = LocalDateTime.of(Integer.parseInt(dateParts[0]), Integer.parseInt(dateParts[1]), Integer.parseInt(dateParts[2]), 0, 0,0);
             dateParts = dateEndRequest.split("/");
-            dateEnd = LocalDateTime.of(Integer.parseInt(dateParts[2]), Integer.parseInt(dateParts[1]), Integer.parseInt(dateParts[0]), 0, 0,0);
+            dateEnd = LocalDateTime.of(Integer.parseInt(dateParts[0]), Integer.parseInt(dateParts[1]), Integer.parseInt(dateParts[2]), 0, 0,0);
         }catch (Exception e){
-            return new ResponseEntity<>("wrong date format dd/mm/yy",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("wrong date format yyyy/dd/gg",HttpStatus.BAD_REQUEST);
         }
 
         Optional<Store> store = storeService.findByStore(storeId);
@@ -172,9 +175,8 @@ public class ControllerMalato {
         if(store.isEmpty()){
             return new ResponseEntity<>("store not found",HttpStatus.NOT_FOUND);
         }
-        List<Inventory> inventories = inventoryService.findAllInventoryByStore(store.get());
 
-        int rentals = rentalService.getRentalsBetween(inventories, dateStart, dateEnd);
+        int rentals = rentalService.getRentalsBetween(store.get(), dateStart, dateEnd);
 
         return new ResponseEntity<>(rentals,HttpStatus.OK);
     }
@@ -207,10 +209,6 @@ public class ControllerMalato {
 
     @GetMapping("/find-films-by-actors")
     ResponseEntity<?>findFilmsByActors(@RequestParam @NotEmpty List<String>lastNames){
-     filmService.getFilmByAuthors(lastNames);
     return new ResponseEntity<>(filmService.getFilmByAuthors(lastNames),HttpStatus.OK);
-
     }
-
-
 }

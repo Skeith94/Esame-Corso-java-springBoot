@@ -28,8 +28,8 @@ public class RentalService {
     }
 
 
-    public Integer getRentalsBetween(List<Inventory> inventories, LocalDateTime dateStart, LocalDateTime dateEnd){
-        return rentalRepository.getRentalsBetween(inventories,dateStart,dateEnd);
+    public Integer getRentalsBetween(Store store, LocalDateTime dateStart, LocalDateTime dateEnd){
+        return rentalRepository.getRentalsBetween(store,dateStart,dateEnd);
     }
 
     public List<FilmRentResponse>getFilmRent(Customer customer){

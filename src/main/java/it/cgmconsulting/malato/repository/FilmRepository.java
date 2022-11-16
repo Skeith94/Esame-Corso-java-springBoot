@@ -21,8 +21,39 @@ public interface FilmRepository extends JpaRepository<Film,Long> {
     List<FilmLanguageResponse>getFilmByLanguage(@Param("languageId")Long languageId);
 
 
-    @Query(value="select new it.cgmconsulting.malato.payload.response.FilmResponse(f.filmId,f.title,count(f.filmId) as tot) from Film f join FilmStaff fs on f=fs.filmStaffId.filmId where fs.filmStaffId.staffId.lastname in :lastNames group by f.filmId,f.title,f.filmId order by f.title")
-    List<FilmResponse> getFilmByAuthors(@Param("lastNames")List<String>lastNames);
+    @Query(value="select subquery1.filmId,count(filmId)as tot,f.title from  " +
+            " (select  " +
+            "    film0_.film_id as filmId  " +
+            " from  " +
+            "    film film0_  " +
+            "        inner join  " +
+            "    film_staff filmstaff1_  " +
+            "    on ( " +
+            "            film0_.film_id=filmstaff1_.film_id  " +
+            "        ) " +
+            "        inner join " +
+            "    staff staff2_  " +
+            "    on ( " +
+            "            filmstaff1_.staff_id=staff2_.staff_id " +
+            "        ) " +
+            "        inner join  " +
+            "    role role3_  " +
+            "    on ( " +
+            "            role3_.role_name='ACTOR'  " +
+            "        ) cross   " +
+            "            join  " +
+            "    staff staff4_ " +
+            " where " +
+            "        filmstaff1_.staff_id=staff4_.staff_id " +
+            "  and  " +
+            "        staff4_.lastname in  " +
+            "        (:lastNames) " +
+            " " +
+            " group by " +
+            "    film0_.film_id, " +
+            "    staff2_.lastname)subquery1 inner join film f on subquery1.filmId=f.film_id group by subquery1.filmId " +
+            " having count(film_id)=:numActor",nativeQuery = true)
+    List<FilmResponse> getFilmByAuthors(@Param("lastNames")List<String>lastNames,@Param("numActor")int numActor);
 
 
 

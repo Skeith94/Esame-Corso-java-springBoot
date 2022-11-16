@@ -19,8 +19,8 @@ public interface RentalRepository extends JpaRepository<Rental, RentalId>{
     @Query(value = "select r from Rental r where r.rentalId.inventoryId=:inventory",countQuery = "select count(r) from Rental r")
     List<Rental> getRentalsByInventorys(@Param("inventory") Inventory inventory, Pageable paging);
 
-    @Query(value = "select count(r) from Rental r where r.rentalId.rentalDate between :dateStart and :dateEnd and r.rentalId.inventoryId in :inventories ")
-    Integer getRentalsBetween(@Param("inventories") List<Inventory>inventories, @Param("dateStart") LocalDateTime dateStart, @Param("dateEnd")LocalDateTime dateEnd);
+    @Query(value = "select count(r) from Rental r where r.rentalId.rentalDate between :dateStart and :dateEnd and r.rentalId.inventoryId.storeId=:store ")
+    Integer getRentalsBetween(@Param("store") Store store, @Param("dateStart") LocalDateTime dateStart, @Param("dateEnd")LocalDateTime dateEnd);
 
    @Query(value="select new it.cgmconsulting.malato.payload.response.FilmRentResponse(r.rentalId.inventoryId.filmId.filmId,r.rentalId.inventoryId.filmId.title,r.rentalId.inventoryId.storeId.storeName)from Rental r where r.rentalId.customerId=:customer")
    List<FilmRentResponse>getFilmRent(@Param("customer") Customer customer);
