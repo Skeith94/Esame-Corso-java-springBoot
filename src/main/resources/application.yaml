@@ -2,10 +2,14 @@ server:
   port: 8083
 
 spring:
+  data:
+    mongodb:
+      username: admin
+      password: 12345
+      uri: mongodb://localhost:49153/video_store_exam
   jackson:
     serialization:
       indent-output: true
-  
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:6603/video_store_exam?createDatabaseIfNotExist=true&characterEncoding=UTF-8&autoReconnect=true&useSLL=false&useLegacyDatetimeCode=false
@@ -22,8 +26,16 @@ spring:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect 
         '[format_sql]': true
 
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          mongodb:
+            core:
+              MongoTemplate: DEBUG
 
-  #logging:
-    #level:
-      #org:
-      # hibernate: trace
+
+
+
+

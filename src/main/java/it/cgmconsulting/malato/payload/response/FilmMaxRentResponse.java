@@ -1,11 +1,8 @@
 package it.cgmconsulting.malato.payload.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Getter @Setter  @NoArgsConstructor @AllArgsConstructor
+@Getter @Setter  @NoArgsConstructor @AllArgsConstructor @ToString
 public class FilmMaxRentResponse {
     Long filmId;
     String title;
