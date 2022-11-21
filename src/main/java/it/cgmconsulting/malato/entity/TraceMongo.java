@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 
 @Document @NoArgsConstructor @Setter @Getter
 public class TraceMongo {
+    @Id
+    private String id;
     private String uri;
     private LocalDateTime date;
     private String request;
