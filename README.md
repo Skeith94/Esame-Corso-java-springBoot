@@ -1,6 +1,7 @@
 # Esame-Corso-java-
 
-[TODO.pdf](https://github.com/Skeith94/Esame-Corso-java-/files/10058350/TODO.pdf)
+
+![Diagram_video_store_master](https://user-images.githubusercontent.com/107039302/203110364-78908929-8d78-45eb-b60c-93c22b25d0eb.png)
 
 
 
